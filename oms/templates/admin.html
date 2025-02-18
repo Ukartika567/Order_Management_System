@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Report</title>
+</head>
+<body>
+
+    <h2>Download Order Report</h2>
+    <a href="http://127.0.0.1:8000/download-order-report/" download>
+        <button>Download Report</button>
+    </a>
+
+</body>
+</html>
+
+
+
+
+<!---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Order Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: blue;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: darkblue;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Download Your Order Report</h2>
+    <button onclick="downloadReport()">Download Report</button>
+
+    <script>
+        function downloadReport() {
+            fetch("http://127.0.0.1:8000/download-order-report/", {
+                method: "GET",
+                headers: {
+                    "Authorization": "Bearer " + localStorage.getItem("access_token") // Add JWT token
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Failed to download report");
+                }
+                return response.blob();
+            })
+            .then(blob => {
+                // Create a downloadable link
+                let url = window.URL.createObjectURL(blob);
+                let a = document.createElement("a");
+                a.href = url;
+                a.download = "order_report.xlsx";
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("Failed to download the report.");
+            });
+        }
+    </script>
+
+</body>
+</html>
+
+-->

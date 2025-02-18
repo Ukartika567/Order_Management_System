@@ -1,0 +1,134 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+Home
+{% endblock title %}
+
+{% block body %}
+<!-- navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand text-light" href="#">Order Management System</a>
+        <div class="d-flex ms-auto">
+            {% if request.user.is_authenticated %}
+            <button class="btn btn-outline-light" type="submit">Sign Out</a>
+                {% else %}
+                <button class="btn btn-outline-light" type="button" data-bs-toggle="modal"
+                    data-bs-target="#exampleModal" data-bs-whatever="@mdo">Sign In</button>
+                {% endif %}
+        </div>
+    </div>
+</nav>
+
+<!-- modal  -->
+<div class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">New message</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">Recipient:</label>
+                        <input type="text" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="message-text" class="col-form-label">Message:</label>
+                        <textarea class="form-control" id="message-text"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Send message</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--*********products**************-->
+<div class="container mt-4">
+    <!-- Filter & Search Section -->
+    <form method="GET" action="" class="mb-3">
+        <div class="row g-2">
+            <!-- Price Range -->
+            <div class="col-md-3">
+                <label for="price_gte" class="form-label">Min Price</label>
+                <input type="number" class="form-control" name="price__gte" id="price_gte" placeholder="Min Price">
+            </div>
+            <div class="col-md-3">
+                <label for="price_lte" class="form-label">Max Price</label>
+                <input type="number" class="form-control" name="price__lte" id="price_lte" placeholder="Max Price">
+            </div>
+
+            <!-- Stock Quantity -->
+            <div class="col-md-3">
+                <label for="stock_gte" class="form-label">Min Stock</label>
+                <input type="number" class="form-control" name="stock_quantity__gte" id="stock_gte"
+                    placeholder="Min Stock">
+            </div>
+
+            <!-- Ordering -->
+            <div class="col-md-3">
+                <label for="ordering" class="form-label">Sort By</label>
+                <select class="form-select" name="ordering" id="ordering">
+                    <option value="">Select</option>
+                    <option value="price">Price (Low to High)</option>
+                    <option value="-price">Price (High to Low)</option>
+                    <option value="created_at">Newest First</option>
+                    <option value="-created_at">Oldest First</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="row mt-3">
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-primary w-100">Filter</button>
+            </div>
+        </div>
+    </form>
+
+    <!-- Order Table -->
+    <h2 class="text-center">Product List</h2>
+    <table class="table table-dark table-hover">
+        <thead>
+            <tr>
+                <th>S.No.</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Stock Quantity</th>
+                <th>Actions</th> <!-- New Column for Buttons -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ product.name }}</td>
+                <td>${{ product.price }}</td>
+                <td>{{ product.stock_quantity }}</td>
+                <td>
+                    {% if request.user.is_authenticated %}
+                        {% if request.user.is_staff or request.user.is_seller %}
+                        
+                            <a href="" class="btn btn-primary">Edit</a>
+                            <a href="" class="btn btn-danger">Delete</a>
+                        {% endif %}
+                    {% endif %}
+                    <a href="" class="btn btn-secondary">Details</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="text-center">No products available</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock body %}
